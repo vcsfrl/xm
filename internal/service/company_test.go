@@ -3,9 +3,9 @@ package service
 import (
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/suite"
-	"github.com/vcsfrl/xm/internal/api/validator"
 	"github.com/vcsfrl/xm/internal/db"
 	"github.com/vcsfrl/xm/internal/model"
+	"github.com/vcsfrl/xm/internal/validator"
 	"gorm.io/gorm"
 	"testing"
 )
