@@ -1,0 +1,43 @@
+services:
+  xm_app_prod: &xm_app_prod
+    build:
+      dockerfile: Dockerfile
+      target: prod
+      context: .
+      args:
+        - username=${CONTAINER_USERNAME}
+        - exec_user_id=${CONTAINER_EXEC_USER_ID}
+    container_name: xm_app_prod
+    image: xm_app_prod
+    restart: "unless-stopped"
+    volumes:
+      - ./data/db:/srv/xm/data/db:shared
+      - /etc/localtime:/etc/localtime:ro
+    user: ${CONTAINER_EXEC_USER_ID}:${CONTAINER_EXEC_USER_ID}
+    ports:
+      - ${XM_DEBUG_PORT}:${XM_DEBUG_PORT}
+      - ${XM_APP_PORT}:${XM_APP_PORT}
+    env_file:
+      - .env
+    networks:
+      - xm_nw
+
+  xm_app_dev:
+    <<: *xm_app_prod
+    restart: "no"
+    build:
+      dockerfile: Dockerfile
+      target: dev
+      context: .
+      args:
+        - username=${CONTAINER_USERNAME}
+        - exec_user_id=${CONTAINER_EXEC_USER_ID}
+    container_name: xm_app_dev
+    image: xm_app_dev
+    volumes:
+      - .:/srv/xm:shared
+      - /etc/localtime:/etc/localtime:ro
+
+
+networks:
+  xm_nw:
