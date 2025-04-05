@@ -48,6 +48,7 @@ make help
 - [x] Unit and functional tests
 - [x] Linter
 - [x] Makefile
+- [x] Configurable (.env)
 - [x] README
 - [x] Example usage (this is equivalent to an integration test - see cmd/example)
 
