@@ -15,6 +15,8 @@ USER root:root
 COPY . /srv/xm
 RUN chown $username:$username /srv/xm -R
 USER $username:$username
+RUN go mod tidy
+RUN go mod vendor
 RUN go build -o /srv/xm/bin/app main.go
 
 # Prod image
