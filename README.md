@@ -2,8 +2,8 @@
 
 
 ## Prerequisites
-```azure
-NOTE: make commands where only tested in linux
+```bash
+NOTE: Make commands were only tested in Linux.
 ```
  - Docker
  - Docker Compose
