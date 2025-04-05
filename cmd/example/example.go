@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
-	"github.com/vcsfrl/xm/internal/api/middleware"
+	"github.com/vcsfrl/xm/dto"
 	"github.com/vcsfrl/xm/internal/config"
 	"github.com/vcsfrl/xm/internal/model"
 	"io"
@@ -14,7 +14,7 @@ import (
 )
 
 func Run(config *config.Config, logger zerolog.Logger) {
-	authResp, err := authenticate(middleware.LoginRequest{
+	authResp, err := authenticate(dto.LoginRequest{
 		Username: config.AuthUser,
 		Password: config.AuthPassword,
 	}, config)
@@ -124,7 +124,7 @@ func doRequest(req *http.Request) ([]byte, error) {
 	return body, nil
 }
 
-func authenticate(login middleware.LoginRequest, config *config.Config) (*middleware.LoginResponse, error) {
+func authenticate(login dto.LoginRequest, config *config.Config) (*dto.LoginResponse, error) {
 	jsonValue, err := json.Marshal(login)
 	if err != nil {
 		return nil, err
@@ -141,7 +141,7 @@ func authenticate(login middleware.LoginRequest, config *config.Config) (*middle
 		return nil, err
 	}
 
-	var loginResponse middleware.LoginResponse
+	var loginResponse dto.LoginResponse
 	err = json.Unmarshal(body, &loginResponse)
 
 	return &loginResponse, err

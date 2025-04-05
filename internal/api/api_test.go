@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/suite"
-	"github.com/vcsfrl/xm/internal/api/middleware"
+	"github.com/vcsfrl/xm/dto"
 	"github.com/vcsfrl/xm/internal/config"
 	db2 "github.com/vcsfrl/xm/internal/db"
 	"github.com/vcsfrl/xm/internal/model"
@@ -235,14 +235,14 @@ func (suite *RestApiTestSuite) testCompany() model.Company {
 	}
 }
 
-func (suite *RestApiTestSuite) loginRequest() middleware.LoginRequest {
-	return middleware.LoginRequest{
+func (suite *RestApiTestSuite) loginRequest() dto.LoginRequest {
+	return dto.LoginRequest{
 		Username: suite.config.AuthUser,
 		Password: suite.config.AuthPassword,
 	}
 }
 
-func (suite *RestApiTestSuite) authenticate(login middleware.LoginRequest) middleware.LoginResponse {
+func (suite *RestApiTestSuite) authenticate(login dto.LoginRequest) dto.LoginResponse {
 	jsonValue, err := json.Marshal(login)
 	suite.NoError(err)
 	req, err := http.NewRequest("POST", "/api/v1/login", bytes.NewBuffer(jsonValue))
@@ -255,7 +255,7 @@ func (suite *RestApiTestSuite) authenticate(login middleware.LoginRequest) middl
 
 	suite.Equal(http.StatusOK, w.Code)
 
-	var loginResponse middleware.LoginResponse
+	var loginResponse dto.LoginResponse
 	err = json.Unmarshal(w.Body.Bytes(), &loginResponse)
 	suite.NoError(err)
 	return loginResponse

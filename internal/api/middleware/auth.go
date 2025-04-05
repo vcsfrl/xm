@@ -4,6 +4,7 @@ import (
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
+	"github.com/vcsfrl/xm/dto"
 	"github.com/vcsfrl/xm/internal/config"
 	"time"
 )
@@ -58,7 +59,7 @@ func (am *AuthenticationManager) buildMiddleware() *jwt.GinJWTMiddleware {
 
 func (am *AuthenticationManager) payloadFunc() func(data interface{}) jwt.MapClaims {
 	return func(data interface{}) jwt.MapClaims {
-		if v, ok := data.(*AuthUser); ok {
+		if v, ok := data.(*dto.AuthUser); ok {
 			return jwt.MapClaims{
 				identityKey: v.Username,
 			}
@@ -70,7 +71,7 @@ func (am *AuthenticationManager) payloadFunc() func(data interface{}) jwt.MapCla
 func (am *AuthenticationManager) identityHandler() func(c *gin.Context) interface{} {
 	return func(c *gin.Context) interface{} {
 		claims := jwt.ExtractClaims(c)
-		return &AuthUser{
+		return &dto.AuthUser{
 			Username: claims[identityKey].(string),
 		}
 	}
@@ -79,7 +80,7 @@ func (am *AuthenticationManager) identityHandler() func(c *gin.Context) interfac
 // authenticator is the function that checks if the user is authenticated
 func (am *AuthenticationManager) authenticator() func(c *gin.Context) (interface{}, error) {
 	return func(c *gin.Context) (interface{}, error) {
-		var loginVals LoginRequest
+		var loginVals dto.LoginRequest
 		if err := c.ShouldBind(&loginVals); err != nil {
 			return "", jwt.ErrMissingLoginValues
 		}
@@ -87,7 +88,7 @@ func (am *AuthenticationManager) authenticator() func(c *gin.Context) (interface
 		password := loginVals.Password
 
 		if userName == am.config.AuthUser && password == am.config.AuthPassword {
-			return &AuthUser{
+			return &dto.AuthUser{
 				Username: userName,
 			}, nil
 		}
@@ -98,7 +99,7 @@ func (am *AuthenticationManager) authenticator() func(c *gin.Context) (interface
 // authorizator is the function that checks if the user is authorized to access the resource
 func (am *AuthenticationManager) authorizator() func(data interface{}, c *gin.Context) bool {
 	return func(data interface{}, c *gin.Context) bool {
-		if v, ok := data.(*AuthUser); ok && v.Username == am.config.AuthUser {
+		if v, ok := data.(*dto.AuthUser); ok && v.Username == am.config.AuthUser {
 			return true
 		}
 		return false
