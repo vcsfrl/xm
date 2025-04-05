@@ -29,7 +29,7 @@ type CompanyHandlerSuite struct {
 
 func (suite *CompanyHandlerSuite) SetupTest() {
 	suite.logger = zerolog.Nop()
-	db, err := db2.InitTestSqlite(suite.logger)
+	db, err := db2.InitTestSqlite()
 	suite.NoError(err)
 	suite.NotNil(db)
 

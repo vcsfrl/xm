@@ -33,7 +33,7 @@ type RestApiTestSuite struct {
 
 func (suite *RestApiTestSuite) SetupTest() {
 	suite.logger = zerolog.Nop()
-	db, err := db2.InitTestSqlite(suite.logger)
+	db, err := db2.InitTestSqlite()
 	suite.NoError(err)
 	suite.NotNil(db)
 

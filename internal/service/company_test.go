@@ -23,7 +23,7 @@ type CompanyFixture struct {
 
 func (cf *CompanyFixture) SetupTest() {
 	var err error
-	cf.db, err = db.InitTestSqlite(zerolog.Nop())
+	cf.db, err = db.InitTestSqlite()
 	cf.NoError(err)
 	cf.logger = zerolog.Nop()
 }

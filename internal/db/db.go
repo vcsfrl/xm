@@ -1,14 +1,13 @@
 package db
 
 import (
-	"github.com/rs/zerolog"
 	"github.com/vcsfrl/xm/internal/config"
 	"github.com/vcsfrl/xm/internal/model"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
-func InitSqlite(config *config.Config, logger zerolog.Logger) (*gorm.DB, error) {
+func InitSqlite(config *config.Config) (*gorm.DB, error) {
 	var err error
 	var db *gorm.DB
 
@@ -32,7 +31,7 @@ func InitSqlite(config *config.Config, logger zerolog.Logger) (*gorm.DB, error) 
 	return db, nil
 }
 
-func InitTestSqlite(logger zerolog.Logger) (*gorm.DB, error) {
+func InitTestSqlite() (*gorm.DB, error) {
 	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{
 		Logger: nil,
 	})

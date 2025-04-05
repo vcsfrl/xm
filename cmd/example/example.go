@@ -9,7 +9,7 @@ import (
 	"github.com/vcsfrl/xm/internal/api/middleware"
 	"github.com/vcsfrl/xm/internal/config"
 	"github.com/vcsfrl/xm/internal/model"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -56,6 +56,10 @@ func Run(config *config.Config, logger zerolog.Logger) {
 	//////////////////////////////////////////////////////////////////////////////////
 	var responseCompany model.Company
 	err = json.Unmarshal(body, &responseCompany)
+	if err != nil {
+		logger.Error().Err(err).Msg("Failed to unmarshal company")
+		return
+	}
 
 	responseCompany.Description = responseCompany.Description + " - updated"
 
@@ -108,10 +112,12 @@ func doRequest(req *http.Request) ([]byte, error) {
 	}
 
 	if resp.Body != nil {
-		defer resp.Body.Close()
+		defer func() {
+			_ = resp.Body.Close()
+		}()
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}

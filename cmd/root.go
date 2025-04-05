@@ -66,7 +66,7 @@ func init() {
 
 	// Init database.
 	var err error
-	db, err = dbFactory.InitSqlite(appConfig, logger)
+	db, err = dbFactory.InitSqlite(appConfig)
 	if err != nil {
 		logger.Error().Err(err).Msg("Init db.")
 		os.Exit(1)
