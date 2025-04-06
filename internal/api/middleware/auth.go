@@ -4,8 +4,8 @@ import (
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
-	"github.com/vcsfrl/xm/dto"
 	"github.com/vcsfrl/xm/internal/config"
+	"github.com/vcsfrl/xm/internal/dto"
 	"time"
 )
 
